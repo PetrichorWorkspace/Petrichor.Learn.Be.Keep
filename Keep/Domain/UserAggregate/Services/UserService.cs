@@ -1,8 +1,8 @@
-﻿using Keep.Domain.Entities;
-using Keep.Domain.Exceptions;
+﻿using Keep.Domain.UserAggregate.Entities;
+using Keep.Domain.UserAggregate.Exceptions;
 using Keep.Driven.NpgsqlPersistence;
 
-namespace Keep.Domain.Services;
+namespace Keep.Domain.UserAggregate.Services;
 
 public interface IUserService
 {

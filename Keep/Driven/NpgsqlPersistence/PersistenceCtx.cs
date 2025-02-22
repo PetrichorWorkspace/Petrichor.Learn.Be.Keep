@@ -1,4 +1,4 @@
-﻿using Keep.Domain.Entities;
+﻿using Keep.Domain.UserAggregate.Entities;
 using Keep.Driven.NpgsqlPersistence.Repos;
 using Microsoft.EntityFrameworkCore;
 

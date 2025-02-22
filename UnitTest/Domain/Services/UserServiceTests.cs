@@ -1,6 +1,6 @@
-﻿using Keep.Domain.Entities;
-using Keep.Domain.Exceptions;
-using Keep.Domain.Services;
+﻿using Keep.Domain.UserAggregate.Entities;
+using Keep.Domain.UserAggregate.Exceptions;
+using Keep.Domain.UserAggregate.Services;
 using Keep.Driven.NpgsqlPersistence;
 using Moq;
 

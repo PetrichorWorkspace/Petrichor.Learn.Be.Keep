@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Domain\UserAggregate\" />
       <Folder Include="Driven\Auth0Identity\Dtos\" />
     </ItemGroup>
 

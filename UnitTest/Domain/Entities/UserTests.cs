@@ -1,4 +1,4 @@
-﻿using Keep.Domain.Entities;
+﻿using Keep.Domain.UserAggregate.Entities;
 
 namespace UnitTest.Domain.Entities;
 
