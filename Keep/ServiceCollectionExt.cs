@@ -1,4 +1,5 @@
-﻿using Keep.Domain.Services;
+﻿using Keep.Domain.NoteAggregate.Services;
+using Keep.Domain.UserAggregate.Services;
 using Keep.Driven.NpgsqlPersistence;
 using Keep.Driving.Common.Security;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +25,13 @@ public static class ServiceCollectionExt
         #endregion
         
         #region Drivens
-
         services.AddPersistenceService(configuration);
-        
         services.AddAuth0IdentityService();
-
         #endregion
         
         #region Domain
-        services.AddDomainServices();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<INoteService, NoteService>();
         #endregion
         
         #region Driving
@@ -47,11 +46,6 @@ public static class ServiceCollectionExt
 
         services.AddAuthorizationBuilder()
             .AddAuth0ApiKeyAuthorization();
-    }
-    
-    private static void AddDomainServices(this IServiceCollection services)
-    {
-        services.AddScoped<IUserService, UserService>();
     }
     
     private static void AddPersistenceService(this IServiceCollection services, ConfigurationManager configuration)

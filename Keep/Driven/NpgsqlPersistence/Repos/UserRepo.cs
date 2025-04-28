@@ -1,4 +1,4 @@
-﻿using Keep.Domain.Entities;
+﻿using Keep.Domain.UserAggregate.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Driven.Persistence.Repositories;
 

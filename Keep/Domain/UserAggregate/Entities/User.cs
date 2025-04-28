@@ -1,7 +1,7 @@
 ﻿using Shared.Core.Domain.Entities;
 using Shared.Core.Domain.Rules.BaseEntityRules;
 
-namespace Keep.Domain.Entities;
+namespace Keep.Domain.UserAggregate.Entities;
 
 public class User : BaseEntity
 {

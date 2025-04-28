@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Keep.Domain.Entities;
-using Keep.Domain.Exceptions;
-using Keep.Domain.Services;
+using Keep.Domain.UserAggregate.Entities;
+using Keep.Domain.UserAggregate.Exceptions;
+using Keep.Domain.UserAggregate.Services;
 using Keep.Driven.NpgsqlPersistence;
 using Keep.Driving.Common.Security;
 using Shared.Core.Domain.Rules.BaseEntityRules;
@@ -25,15 +25,15 @@ public abstract record RegisterUserFromAuth0 : IEndPoint
     {
         public RequestRule()
         {
-            RuleFor(u => u.IdentityId)
+            RuleFor(req => req.IdentityId)
                 .IdRuleValidator();
             
-            RuleFor(u => u.CreatedAt)
+            RuleFor(req => req.CreatedAt)
                 .NotNull();
             
-            When(u => u.CreatedAt != null, () =>
+            When(req => req.CreatedAt is not null, () =>
             {
-                RuleFor(u => u.CreatedAt!.Value)
+                RuleFor(req => req.CreatedAt!.Value)
                     .CreatedAtRuleValidator();
             });
         }
