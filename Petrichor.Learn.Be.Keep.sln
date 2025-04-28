@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keep", "Keep\Keep.csproj", "{90117A4E-490F-41C8-AC23-F673F7F76EB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Core", "..\..\..\be\shared\.net\Petrichor.Be.Shared.Core.Net\Shared.Core\Shared.Core.csproj", "{E0DBEE8F-A35A-4B22-8DFA-42C5C007CFAB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{627C71EE-7EBB-4F32-842C-83396C20A39E}"
 EndProject
 Global
@@ -16,10 +14,6 @@ Global
 		{90117A4E-490F-41C8-AC23-F673F7F76EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90117A4E-490F-41C8-AC23-F673F7F76EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90117A4E-490F-41C8-AC23-F673F7F76EB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0DBEE8F-A35A-4B22-8DFA-42C5C007CFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0DBEE8F-A35A-4B22-8DFA-42C5C007CFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0DBEE8F-A35A-4B22-8DFA-42C5C007CFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0DBEE8F-A35A-4B22-8DFA-42C5C007CFAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{627C71EE-7EBB-4F32-842C-83396C20A39E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{627C71EE-7EBB-4F32-842C-83396C20A39E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{627C71EE-7EBB-4F32-842C-83396C20A39E}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,4 +1,5 @@
-﻿using Keep.Domain.UserAggregate.Entities;
+﻿using FluentValidation;
+using Keep.Domain.UserAggregate.Entities;
 using Keep.Domain.UserAggregate.Exceptions;
 using Keep.Driven.NpgsqlPersistence;
 
@@ -12,10 +13,12 @@ public interface IUserService
 public record UserService : IUserService
 {
     private readonly IPersistenceCtx _persistenceCtx;
+    private readonly IValidator<User> _validator;
 
-    public UserService(IPersistenceCtx persistenceCtx)
+    public UserService(IPersistenceCtx persistenceCtx, IValidator<User> validator)
     {
         _persistenceCtx = persistenceCtx;
+        _validator = validator;
     }
     
     public async Task<User> CreateUserAsync(string identityId, DateTime createdAt, CancellationToken ct = default)
@@ -29,6 +32,8 @@ public record UserService : IUserService
             IdentityId = identityId,
             CreatedAt = createdAt
         };
+        
+        await _validator.ValidateAndThrowAsync(newUser, ct);
         
         await _persistenceCtx.UserRepo.AddAsync(newUser, ct);
 
