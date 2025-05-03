@@ -1,7 +1,7 @@
 ﻿using Keep.Domain.NoteAggregate.Services;
 using Keep.Domain.UserAggregate.Services;
 using Keep.Driven.NpgsqlPersistence;
-using Keep.Driving.Common.Security;
+using Keep.Driving.ForAuth0;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core;
 

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Shared.Core.Driving.Security.ApiKey;
 
-namespace Keep.Driving.Common.Security;
+namespace Keep.Driving.ForAuth0;
 
 public static class SecurityForAuth0
 {

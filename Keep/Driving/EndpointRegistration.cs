@@ -1,4 +1,4 @@
-﻿using Keep.Driving.Users.ForAuth0.RestApi;
+﻿using Keep.Driving.ForAuth0.RestApi.Users;
 
 namespace Keep.Driving;
 

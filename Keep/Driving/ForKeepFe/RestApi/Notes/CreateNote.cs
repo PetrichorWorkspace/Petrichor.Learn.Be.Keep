@@ -6,7 +6,7 @@ using Keep.Driven.NpgsqlPersistence;
 using Shared.Core.Driving.EndPoints;
 using Shared.Core.Driving.EndPoints.Http.Extensions;
 
-namespace Keep.Driving.Notes.ForKeepFe.RestApi;
+namespace Keep.Driving.ForKeepFe.RestApi.Notes;
 
 public abstract record CreateNote : IEndPoint
 {
