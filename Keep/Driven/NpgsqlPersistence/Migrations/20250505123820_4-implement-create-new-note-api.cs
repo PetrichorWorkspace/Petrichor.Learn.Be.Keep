@@ -16,7 +16,6 @@ namespace Keep.Driven.NpgsqlPersistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    identity_id = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     last_modified_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -51,12 +50,6 @@ namespace Keep.Driven.NpgsqlPersistence.Migrations
                 name: "ix_notes_user_id",
                 table: "notes",
                 column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_users_identity_id",
-                table: "users",
-                column: "identity_id",
-                unique: true);
         }
 
         /// <inheritdoc />
