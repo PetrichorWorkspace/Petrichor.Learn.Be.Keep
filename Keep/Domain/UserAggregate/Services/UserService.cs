@@ -23,13 +23,13 @@ public record UserService : IUserService
     
     public async Task<User> CreateUserAsync(string identityId, DateTime createdAt, CancellationToken ct = default)
     {
-        var userByIdentityId = await _persistenceCtx.UserRepo.GetByIdentityIdAsync(identityId, ct);
-        if (userByIdentityId != null)
+        var userByIdentityId = await _persistenceCtx.UserRepo.GetByIdAsync(identityId, ct);
+        if (userByIdentityId is not null)
             throw new DuplicatedUserIdentityIdExc(nameof(identityId));
 
         var newUser = new User
         {
-            IdentityId = identityId,
+            Id = identityId,
             CreatedAt = createdAt
         };
         

@@ -5,24 +5,24 @@ using Keep.Domain.UserAggregate.Services;
 using Keep.Driven.NpgsqlPersistence;
 using Shared.Core.Domain.Rules.BaseEntityRules;
 using Shared.Core.Driving.EndPoints;
-using Shared.Core.Driving.EndPoints.Http.Extensions;
 using Shared.Core.Driving.Models;
+using Shared.Core.Driving.RequestValidation.Http;
 
 namespace Keep.Driving.ForAuth0.RestApi.Users;
 
-public abstract record RegisterUserFromAuth0 : IEndPoint
+public abstract record RegisterUser : IEndPoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app
-            .MapPost(Router.Users + "/register-user-from-auth0", HandleAsync)
-            .WithRequestValidation<Request>()
+            .MapPost(Router.Users, HandleAsync)
+            .WithRequestValidation<RegisterUserRequest>()
             .RequireAuthorization(SecurityForAuth0.Policy);
     
-    public record Request(string IdentityId, DateTime? CreatedAt);
+    public record RegisterUserRequest(string IdentityId, DateTime? CreatedAt);
 
-    public class RequestRule : AbstractValidator<Request>
+    public class RegisterUserRule : AbstractValidator<RegisterUserRequest>
     {
-        public RequestRule()
+        public RegisterUserRule()
         {
             RuleFor(req => req.IdentityId)
                 .IdRuleValidator();
@@ -38,13 +38,13 @@ public abstract record RegisterUserFromAuth0 : IEndPoint
         }
     }
     
-    public record Response(string Id)
+    public record RegisterUserResponse(string Id)
     {
-        public static Response ToResponse(User user) => new (user.Id);
+        public static RegisterUserResponse ToResponse(User user) => new (user.Id);
     }
     
     static async Task<IResult> HandleAsync(
-        Request req, 
+        RegisterUserRequest req, 
         IUserService userService,
         IPersistenceCtx persistenceCtx,
         CancellationToken ct = default)
@@ -54,10 +54,10 @@ public abstract record RegisterUserFromAuth0 : IEndPoint
             var newUser = await userService.CreateUserAsync(req.IdentityId, req.CreatedAt!.Value, ct);
             await persistenceCtx.SaveChangesAsync(ct);
             
-            return TypedResults.Created(newUser.Id, new SuccessResponse<Response>
+            return TypedResults.Created(newUser.Id, new SuccessResponse<RegisterUserResponse>
             {
-                Message = "user registered successfully",
-                Data = Response.ToResponse(newUser)
+                Message = "User registered successfully",
+                Data = RegisterUserResponse.ToResponse(newUser)
             });
         }
         catch (DuplicatedUserIdentityIdExc e)

@@ -73,22 +73,12 @@ namespace Keep.Driven.NpgsqlPersistence.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("IdentityId")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("identity_id");
-
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("last_modified_at");
 
                     b.HasKey("Id")
                         .HasName("pk_users");
-
-                    b.HasIndex("IdentityId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_users_identity_id");
 
                     b.ToTable("users", (string)null);
                 });

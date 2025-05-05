@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Shared.Core.Driving.Security.ApiKey;
+﻿using Shared.Core.Driving.Authentication.ApiKey;
 
 namespace Keep.Driving.ForAuth0;
 
@@ -9,20 +7,26 @@ public static class SecurityForAuth0
     public const string Policy = "SecurityForAuth0Policy";
     public const string Scheme = "SecurityForAuth0Scheme";
 
-    public static AuthenticationBuilder AddAuth0ApiKeyAuthentication(this AuthenticationBuilder builder)
+    private static void AddAuth0ApiKeyAuthentication(this IServiceCollection services)
     {
-        builder.AddApiKey(Scheme);
-        return builder;
+        services
+            .AddAuthentication()
+            .AddApiKey(Scheme);
     }
 
-    public static AuthorizationBuilder AddAuth0ApiKeyAuthorization(this AuthorizationBuilder builder)
+    private static void AddAuth0ApiKeyAuthorization(this IServiceCollection services)
     {
-        builder.AddPolicy(Policy, policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policy, policy =>
             {
                 policy.AuthenticationSchemes.Add(Scheme);
                 policy.RequireAuthenticatedUser();
             });
-        
-        return builder;
+    }
+    
+    public static void AddSecurityForAuth0(this IServiceCollection services)
+    {
+        services.AddAuth0ApiKeyAuthentication();
+        services.AddAuth0ApiKeyAuthorization();
     }
 }

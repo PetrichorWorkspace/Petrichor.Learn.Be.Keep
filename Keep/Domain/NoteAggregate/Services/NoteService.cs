@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Keep.Domain.NoteAggregate.Entities;
+using Keep.Domain.UserAggregate.Exceptions;
 using Keep.Driven.NpgsqlPersistence;
 
 namespace Keep.Domain.NoteAggregate.Services;
@@ -22,6 +23,10 @@ public record NoteService : INoteService
 
     public async Task<Note> CreateNoteAsync(string userId, string title, string content, CancellationToken ct = default)
     {
+        var user = await _persistenceCtx.UserRepo.GetByIdAsync(userId, ct);
+        if (user is null)
+            throw new UserIdDoesNotExistExc(nameof(userId));
+
         var note = new Note
         {
             UserId = userId,

@@ -1,10 +1,14 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+using FluentValidation;
 using Keep.Domain.NoteAggregate.Entities;
 using Keep.Domain.NoteAggregate.Rules;
 using Keep.Domain.NoteAggregate.Services;
+using Keep.Domain.UserAggregate.Exceptions;
 using Keep.Driven.NpgsqlPersistence;
+using Shared.Core.Driven.Security;
 using Shared.Core.Driving.EndPoints;
-using Shared.Core.Driving.EndPoints.Http.Extensions;
+using Shared.Core.Driving.Models;
+using Shared.Core.Driving.RequestValidation.Http;
 
 namespace Keep.Driving.ForKeepFe.RestApi.Notes;
 
@@ -12,14 +16,15 @@ public abstract record CreateNote : IEndPoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app
-            .MapPost(Router.Tasks, HandleAsync)
-            .WithRequestValidation<Request>();
+            .MapPost(Router.Notes, HandleAsync)
+            .WithRequestValidation<CreateNoteRequest>()
+            .RequireAuthorization(SecurityForKeepFe.Policy);
     
-    public record Request(string Title, string Content);
+    public record CreateNoteRequest(string Title, string Content);
     
-    public class RequestRule : AbstractValidator<Request>
+    public class CreateNoteRequestRule : AbstractValidator<CreateNoteRequest>
     {
-        public RequestRule()
+        public CreateNoteRequestRule()
         {
             RuleFor(req => req.Title)
                 .NoteTitleRuleValidator();
@@ -29,26 +34,34 @@ public abstract record CreateNote : IEndPoint
         }
     }
     
-    public record Response(string Id)
+    public record CreateNoteResponse(string Id)
     {
-        public static Response ToResponse(Note note) => new (note.Id);
+        public static CreateNoteResponse ToResponse(Note note) => new (note.Id);
     }
 
     static async Task<IResult> HandleAsync(
-        Request req, 
+        CreateNoteRequest req, 
+        ClaimsPrincipal claims,
         INoteService noteService, 
         IPersistenceCtx persistenceCtx, 
         CancellationToken ct = default)
     {
         try
         {
-            // var note = await noteService.CreateNoteAsync(req.Title, req.Content,  ct);
-            throw new NotImplementedException();
+            var userId = claims.GetUserId()!;
+            
+            var note = await noteService.CreateNoteAsync(userId, req.Title, req.Content,  ct);
+            await persistenceCtx.SaveChangesAsync(ct);
+            
+            return TypedResults.Created(note.Id, new SuccessResponse<CreateNoteResponse>
+            {
+                Message = "Note created successfully",
+                Data = CreateNoteResponse.ToResponse(note)
+            });
         }
-        catch (Exception e)
+        catch (UserIdDoesNotExistExc)
         {
-            Console.WriteLine(e);
-            throw;
+            return TypedResults.Unauthorized();
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Keep.Domain.NoteAggregate.Services;
 using Keep.Domain.UserAggregate.Services;
+using Keep.Driven.Auth0Identity;
+using Keep.Driven.Auth0Identity.Services;
 using Keep.Driven.NpgsqlPersistence;
 using Keep.Driving.ForAuth0;
+using Keep.Driving.ForKeepFe;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core;
 
@@ -26,7 +29,7 @@ public static class ServiceCollectionExt
         
         #region Drivens
         services.AddPersistenceService(configuration);
-        services.AddAuth0IdentityService();
+        services.AddAuth0IdentityService(configuration);
         #endregion
         
         #region Domain
@@ -35,17 +38,9 @@ public static class ServiceCollectionExt
         #endregion
         
         #region Driving
-        services.AddSecurityConfigurations();
+        services.AddSecurityForAuth0();
+        services.AddSecurityForKeepFe();
         #endregion
-    }
-    
-    private static void AddSecurityConfigurations(this IServiceCollection services)
-    {
-        services.AddAuthentication()
-            .AddAuth0ApiKeyAuthentication();
-
-        services.AddAuthorizationBuilder()
-            .AddAuth0ApiKeyAuthorization();
     }
     
     private static void AddPersistenceService(this IServiceCollection services, ConfigurationManager configuration)
@@ -58,7 +53,9 @@ public static class ServiceCollectionExt
         services.AddScoped<IPersistenceCtx, PersistenceCtx>();
     }
 
-    private static void AddAuth0IdentityService(this IServiceCollection services)
+    private static void AddAuth0IdentityService(this IServiceCollection services, ConfigurationManager configuration)
     {
+        services.Configure<Auth0IdentityServiceSettings>(configuration.GetSection(nameof(Auth0IdentityServiceSettings)));
+        services.AddSingleton<ITokenServiceSingleton, TokenServiceSingleton>();
     }
 }
